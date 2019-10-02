@@ -1,178 +1,178 @@
 {
     "buildings": {
         "\u6728\u5c4b": {
-            "star": 5,
+            "star": 1,
             "level": 800,
-            "buff": 0
+            "buff": 1
         },
         "\u5c45\u6c11\u697c": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 2,
+            "level": 801,
+            "buff": 2
         },
         "\u94a2\u7ed3\u6784\u623f": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 3,
+            "level": 802,
+            "buff": 3
         },
         "\u5e73\u623f": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 4,
+            "level": 803,
+            "buff": 4
         },
         "\u5c0f\u578b\u516c\u5bd3": {
             "star": 5,
-            "level": 800,
-            "buff": 0
+            "level": 804,
+            "buff": 5
         },
         "\u4eba\u624d\u516c\u5bd3": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 6,
+            "level": 805,
+            "buff": 6
         },
         "\u82b1\u56ed\u6d0b\u623f": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 7,
+            "level": 806,
+            "buff": 7
         },
         "\u4e2d\u5f0f\u5c0f\u697c": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 8,
+            "level": 807,
+            "buff": 8
         },
         "\u7a7a\u4e2d\u522b\u5885": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 9,
+            "level": 808,
+            "buff": 9
         },
         "\u590d\u5174\u516c\u9986": {
-            "star": 5,
-            "level": 800,
+            "star": 10,
+            "level": 809,
             "buff": 0
         },
         "\u4fbf\u5229\u5e97": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 2,
+            "level": 801,
+            "buff": 2
         },
         "\u4e94\u91d1\u5e97": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 3,
+            "level": 802,
+            "buff": 3
         },
         "\u670d\u88c5\u5e97": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 4,
+            "level": 803,
+            "buff": 4
         },
         "\u83dc\u5e02\u573a": {
             "star": 5,
-            "level": 800,
-            "buff": 0
+            "level": 804,
+            "buff": 5
         },
         "\u5b66\u6821": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 6,
+            "level": 805,
+            "buff": 6
         },
         "\u56fe\u4e66\u57ce": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 7,
+            "level": 806,
+            "buff": 7
         },
         "\u5546\u8d38\u4e2d\u5fc3": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 8,
+            "level": 807,
+            "buff": 8
         },
         "\u52a0\u6cb9\u7ad9": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 9,
+            "level": 808,
+            "buff": 9
         },
         "\u6c11\u98df\u658b": {
-            "star": 5,
-            "level": 800,
+            "star": 0,
+            "level": 809,
             "buff": 0
         },
         "\u5a92\u4f53\u4e4b\u58f0": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 1,
+            "level": 810,
+            "buff": 1
         },
         "\u6728\u6750\u5382": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 3,
+            "level": 802,
+            "buff": 3
         },
         "\u98df\u54c1\u5382": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 4,
+            "level": 803,
+            "buff": 4
         },
         "\u9020\u7eb8\u5382": {
             "star": 5,
-            "level": 800,
-            "buff": 0
+            "level": 804,
+            "buff": 5
         },
         "\u6c34\u5382": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 6,
+            "level": 805,
+            "buff": 6
         },
         "\u7535\u5382": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 7,
+            "level": 806,
+            "buff": 7
         },
         "\u94a2\u94c1\u5382": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 8,
+            "level": 807,
+            "buff": 8
         },
         "\u7eba\u7ec7\u5382": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 9,
+            "level": 808,
+            "buff": 9
         },
         "\u96f6\u4ef6\u5382": {
-            "star": 5,
-            "level": 800,
+            "star": 0,
+            "level": 809,
             "buff": 0
         },
         "\u4f01\u9e45\u673a\u68b0": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 1,
+            "level": 810,
+            "buff": 1
         },
         "\u4eba\u6c11\u77f3\u6cb9": {
-            "star": 5,
-            "level": 800,
-            "buff": 0
+            "star": 2,
+            "level": 811,
+            "buff": 2
         }
     },
     "buffs": {
         "policy": {
-            "global": 0,
-            "online": 0,
-            "residence": 0,
-            "commerce": 0,
-            "industry": 0,
-            "jiaguozhiguang": 0
+            "global": 1,
+            "online": 2,
+            "residence": 3,
+            "commerce": 4,
+            "industry": 5,
+            "jiaguozhiguang": 6
         },
         "album": {
-            "global": 0,
-            "online": 0,
-            "residence": 0,
+            "global": 7,
+            "online": 8,
+            "residence": 9,
             "commerce": 0,
-            "industry": 0
+            "industry": 1
         },
         "mission": {
-            "global": 0,
-            "online": 0,
-            "residence": 0,
-            "commerce": 0,
-            "industry": 0
+            "global": 2,
+            "online": 3,
+            "residence": 4,
+            "commerce": 5,
+            "industry": 6
         }
     }
 }

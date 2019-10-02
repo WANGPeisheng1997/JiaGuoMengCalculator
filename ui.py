@@ -36,7 +36,7 @@ class BuildingGroupBox(QtWidgets.QGroupBox):
         self.buffLabel.setAlignment(QtCore.Qt.AlignCenter)
 
 
-    def add_building(self, name):
+    def add_building(self, name, star_default = 5, level_default = 800, buff_default = 0):
         y = len(self.buildings_label) * 25 + 45
 
         label = QtWidgets.QLabel(self)
@@ -45,15 +45,15 @@ class BuildingGroupBox(QtWidgets.QGroupBox):
 
         starLineEdit = QtWidgets.QLineEdit(self)
         starLineEdit.setGeometry(QtCore.QRect(80, y, 40, 20))
-        starLineEdit.setText("5")
+        starLineEdit.setText(str(star_default))
 
         levelLineEdit = QtWidgets.QLineEdit(self)
         levelLineEdit.setGeometry(QtCore.QRect(130, y, 40, 20))
-        levelLineEdit.setText("800")
+        levelLineEdit.setText(str(level_default))
 
         buffLineEdit = QtWidgets.QLineEdit(self)
         buffLineEdit.setGeometry(QtCore.QRect(180, y, 80, 20))
-        buffLineEdit.setText("0")
+        buffLineEdit.setText(str(buff_default))
 
         self.buildings_label.append(label)
         self.buildings_star.append(starLineEdit)
@@ -108,30 +108,63 @@ class BuffGroupBox(QtWidgets.QGroupBox):
 
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow, config=None):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(903, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        self.config = config
+
+        if config is not None:
+            self.load_config()
 
         self.residenceGroupBox = BuildingGroupBox(self.centralwidget, QtCore.QRect(10, 20, 270, 300), "residence", "住宅建筑")
         for building in residence_buildings:
-            self.residenceGroupBox.add_building(building)
+            if config is None:
+                self.residenceGroupBox.add_building(building)
+            else:
+                default_value = self.buildings_config[building]
+                self.residenceGroupBox.add_building(building, star_default=default_value["star"], level_default=default_value["level"], buff_default=default_value["buff"])
 
         self.commerceGroupBox = BuildingGroupBox(self.centralwidget, QtCore.QRect(290, 20, 270, 300), "commerce", "商业建筑")
         for building in commerce_buildings:
-            self.commerceGroupBox.add_building(building)
+            if config is None:
+                self.commerceGroupBox.add_building(building)
+            else:
+                default_value = self.buildings_config[building]
+                self.commerceGroupBox.add_building(building, star_default=default_value["star"], level_default=default_value["level"], buff_default=default_value["buff"])
 
         self.industryGroupBox = BuildingGroupBox(self.centralwidget, QtCore.QRect(570, 20, 270, 300), "industry", "工业建筑")
         for building in industry_buildings:
-            self.industryGroupBox.add_building(building)
+            if config is None:
+                self.industryGroupBox.add_building(building)
+            else:
+                default_value = self.buildings_config[building]
+                self.industryGroupBox.add_building(building, star_default=default_value["star"], level_default=default_value["level"], buff_default=default_value["buff"])
 
         self.policyGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(10, 340, 250, 180), "policy", "政策加成")
         self.policyGroupBox.add_buff("家国之光的收入增加")
         self.policyGroupBox.buff_labels.append("家国之光的收入增加")
         self.policyGroupBox.buff_types.append("jiaguozhiguang")
+        if config is not None:
+            for count in range(len(self.policyGroupBox.buff)):
+                buff_dict = self.buffs_config['policy']
+                buff_type = self.policyGroupBox.buff_types[count]
+                self.policyGroupBox.buff[count].setText(str(buff_dict[buff_type]))
+
         self.albumGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(270, 340, 250, 160), "album", "相册加成")
+        if config is not None:
+            for count in range(len(self.albumGroupBox.buff)):
+                buff_dict = self.buffs_config['album']
+                buff_type = self.albumGroupBox.buff_types[count]
+                self.albumGroupBox.buff[count].setText(str(buff_dict[buff_type]))
+
         self.missionGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(530, 340, 250, 160), "mission", "城市任务加成")
+        if config is not None:
+            for count in range(len(self.missionGroupBox.buff)):
+                buff_dict = self.buffs_config['mission']
+                buff_type = self.missionGroupBox.buff_types[count]
+                self.missionGroupBox.buff[count].setText(str(buff_dict[buff_type]))
 
         self.saveButton = QtWidgets.QPushButton(self.centralwidget)
         self.saveButton.setGeometry(QtCore.QRect(400, 520, 101, 23))
@@ -165,12 +198,7 @@ class Ui_MainWindow(object):
         file = open('config.json', 'w')
         file.write(js)
         file.close()
-        file = open('config.json', 'r')
-        dicts = json.load(file)
-        file.close()
-        print(dicts)
 
-
-
-
-
+    def load_config(self):
+        self.buildings_config = self.config["buildings"]
+        self.buffs_config = self.config["buffs"]
