@@ -222,6 +222,7 @@ class Ui_MainWindow(object):
         self.buffs_config = self.config["buffs"]
 
     def calculate(self):
+        self.save_info()
         if os.path.exists("config.json"):
             file = open('config.json', 'r')
             config = json.load(file)

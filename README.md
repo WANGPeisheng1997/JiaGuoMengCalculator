@@ -21,10 +21,11 @@
 
 - #### 发布版：
 
-  百度网盘链接：https://pan.baidu.com/s/1nlP_24rIXvjaqEXbex7oQw 
-  提取码：gooi 
+  百度网盘链接：https://pan.baidu.com/s/1RWfUUfdfkNTFPxwoaRR3CA 
 
-  打开**main.exe**即可畅享所有功能！
+  提取码：mv9g 
+
+  打开star.exe**即可畅享所有功能！
 
 - #### 源代码版：
 	
@@ -61,6 +62,11 @@
 
 
 ## 更新记录：
+
+2019.10.3更新：
+
+- 修复了发布版打不开exe的bug
+- 修复了打开后闪退的bug
 
 2019.10.2更新：
 
