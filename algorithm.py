@@ -32,6 +32,7 @@ class Calculator:
         self.policy_buff = self.buffs_config["policy"]
         self.album_buff = self.buffs_config["album"]
         self.mission_buff = self.buffs_config["mission"]
+        self.blacklist = self.config["blacklist"]
 
         self.buildStars = {1: [], 2: [], 3: [], 4: [], 5: []}
         for build in self.buildings_config:
@@ -39,10 +40,6 @@ class Calculator:
             self.buildStars[star].append(build)
 
         self.mode = 'Online'  # 这个先不要改，后面计划增加供货模式和离线模式
-        self.blacklist = {
-            'Global' : '五金店 钢结构房 平房 学校 小型公寓', #在这里填写你没有或者完全不想用的建筑，空格分隔，优先级最高
-            'Online' : '小型公寓 水厂 花园洋房 复兴公馆 加油站 人民石油'
-        }
         self.totalGold = '1 aa'
 
     def calculateComb(self, buildings):
@@ -105,7 +102,7 @@ class Calculator:
             Industrial = static.Industrial.split()
             Business = static.Business.split()
             Residence = static.Residence.split()
-            for build in self.blacklist['Global'].split() + self.blacklist['Online'].split():
+            for build in self.blacklist:
                 if build in Industrial:
                     Industrial.remove(build)
                 if build in Business:
