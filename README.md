@@ -1,7 +1,3 @@
----
-typora-root-url: ./
----
-
 # JiaGuoMengCalculator
 家国梦建筑最优化计算器(2019.10.2更新)
 
