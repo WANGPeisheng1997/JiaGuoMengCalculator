@@ -38,8 +38,8 @@ class Calculator:
 
         self.mode = 'Online'  # 这个先不要改，后面计划增加供货模式和离线模式
         self.blacklist = {
-            'Global': '',  # 在这里填写你没有或者完全不想用的建筑，空格分隔，优先级最高
-            'Online': ''
+            'Global' : '五金店 钢结构房 平房 学校 小型公寓', #在这里填写你没有或者完全不想用的建筑，空格分隔，优先级最高
+            'Online' : '小型公寓 水厂 花园洋房 复兴公馆 加油站 人民石油'
         }
         self.totalGold = '1 aa'
 
@@ -134,17 +134,17 @@ class Calculator:
 
         for build, info in self.buildsDict.items():
             self.buildsDict[build]['baseIncome'] *= \
-                (1 + self.policy_buff['global'] + self.policy_buff['online'] + self.policy_buff[info['category']] + self.policy_buff['jiaguozhiguang']) * \
-                (1 + self.album_buff['global'] + self.album_buff['online'] + self.album_buff[info['category']]) * \
-                (1 + self.buildings_config[build]['buff'] + self.mission_buff['global'] + self.mission_buff['online'] + self.mission_buff[info['category']])
+                (1 + self.policy_buff['global']/100 + self.policy_buff['online']/100 + self.policy_buff[info['category']]/100 + self.policy_buff['jiaguozhiguang']/100) * \
+                (1 + self.album_buff['global']/100 + self.album_buff['online']/100 + self.album_buff[info['category']]/100) * \
+                (1 + self.buildings_config[build]['buff']/100 + self.mission_buff['global']/100 + self.mission_buff['online']/100 + self.mission_buff[info['category']]/100)
 
         for build, info in self.buildsDict.items():
             if build in static.buffs_100:
                 for buffedBuild in static.buffs_100[build]:
-                    self.buildsDict[build]['buff'][buffedBuild] = 1 + info['star']
+                    self.buildsDict[build]['buff'][buffedBuild] = info['star']
             if build in static.buffs_50:
                 for buffedBuild in static.buffs_50[build]:
-                    self.buildsDict[build]['buff'][buffedBuild] = 1 + info['star'] * 0.5
+                    self.buildsDict[build]['buff'][buffedBuild] = info['star'] * 0.5
 
             if build in static.buffs_ind:
                 self.buildsDict[build]['buff']['industry'] = static.buffs_ind[build][info['star'] - 1]
@@ -161,11 +161,23 @@ class Calculator:
             TotalIncome, Stat = self.calculateComb(buildings)
             results.put(NamedPQ(-TotalIncome, (buildings, Stat)))
 
-        print("hahahahahaaa")
         Best = results.get()
-        print('最优策略：', Best.name[0])
-        print('总秒伤：', self.showLetterNum(-Best.priority))
 
-        print('各建筑等级：', [(Best.name[0][i//3][i%3], x) for i, x in enumerate(Best.name[1][0])])
-        print('各建筑秒伤：', [(Best.name[0][i//3][i%3], self.showLetterNum(x)) for i, x in enumerate(Best.name[1][1])])
+        resultFile = open("result.txt", 'w')
+        print('最优策略：', file=resultFile)
+        print('工业建筑：%s、%s、%s' % (Best.name[0][0]), file=resultFile)
+        print('商业建筑：%s、%s、%s' % (Best.name[0][1]), file=resultFile)
+        print('住宅建筑：%s、%s、%s' % (Best.name[0][2]), file=resultFile)
+
+        print(file=resultFile)
+        print('总秒伤：', self.showLetterNum(-Best.priority), file=resultFile)
+        print(file=resultFile)
+        print('各建筑等级：', file=resultFile)
+        for i, x in enumerate(Best.name[1][0]):
+            print('{:<8}\t'.format(Best.name[0][i // 3][i % 3]), x, file=resultFile)
+        print(file=resultFile)
+        print('各建筑秒伤：', file=resultFile)
+        for i, x in enumerate(Best.name[1][1]):
+            print('{:<8}\t'.format(Best.name[0][i//3][i % 3]), self.showLetterNum(x), file=resultFile)
+        resultFile.close()
 

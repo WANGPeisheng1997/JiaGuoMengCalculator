@@ -2,7 +2,7 @@
     "buildings": {
         "\u6728\u5c4b": {
             "star": 5,
-            "level": 800,
+            "level": 1129,
             "buff": 0
         },
         "\u5c45\u6c11\u697c": {
@@ -17,7 +17,7 @@
         },
         "\u5e73\u623f": {
             "star": 5,
-            "level": 800,
+            "level": 801,
             "buff": 0
         },
         "\u5c0f\u578b\u516c\u5bd3": {
@@ -26,38 +26,38 @@
             "buff": 0
         },
         "\u4eba\u624d\u516c\u5bd3": {
-            "star": 5,
+            "star": 3,
             "level": 800,
             "buff": 0
         },
         "\u82b1\u56ed\u6d0b\u623f": {
-            "star": 5,
+            "star": 3,
             "level": 800,
             "buff": 0
         },
         "\u4e2d\u5f0f\u5c0f\u697c": {
-            "star": 5,
+            "star": 3,
             "level": 800,
             "buff": 0
         },
         "\u7a7a\u4e2d\u522b\u5885": {
-            "star": 5,
+            "star": 2,
             "level": 800,
             "buff": 0
         },
         "\u590d\u5174\u516c\u9986": {
-            "star": 5,
+            "star": 2,
             "level": 800,
             "buff": 0
         },
         "\u4fbf\u5229\u5e97": {
             "star": 5,
-            "level": 800,
+            "level": 1023,
             "buff": 0
         },
         "\u4e94\u91d1\u5e97": {
             "star": 5,
-            "level": 800,
+            "level": 804,
             "buff": 0
         },
         "\u670d\u88c5\u5e97": {
@@ -67,7 +67,7 @@
         },
         "\u83dc\u5e02\u573a": {
             "star": 5,
-            "level": 800,
+            "level": 803,
             "buff": 0
         },
         "\u5b66\u6821": {
@@ -76,43 +76,43 @@
             "buff": 0
         },
         "\u56fe\u4e66\u57ce": {
-            "star": 5,
+            "star": 4,
             "level": 800,
             "buff": 0
         },
         "\u5546\u8d38\u4e2d\u5fc3": {
-            "star": 5,
+            "star": 2,
             "level": 800,
             "buff": 0
         },
         "\u52a0\u6cb9\u7ad9": {
-            "star": 5,
+            "star": 3,
             "level": 800,
             "buff": 0
         },
         "\u6c11\u98df\u658b": {
-            "star": 5,
+            "star": 3,
             "level": 800,
             "buff": 0
         },
         "\u5a92\u4f53\u4e4b\u58f0": {
-            "star": 5,
+            "star": 2,
             "level": 800,
             "buff": 0
         },
         "\u6728\u6750\u5382": {
             "star": 5,
-            "level": 800,
-            "buff": 0
+            "level": 1184,
+            "buff": 200
         },
         "\u98df\u54c1\u5382": {
             "star": 5,
-            "level": 800,
+            "level": 803,
             "buff": 0
         },
         "\u9020\u7eb8\u5382": {
             "star": 5,
-            "level": 800,
+            "level": 813,
             "buff": 0
         },
         "\u6c34\u5382": {
@@ -126,46 +126,46 @@
             "buff": 0
         },
         "\u94a2\u94c1\u5382": {
-            "star": 5,
+            "star": 3,
             "level": 800,
-            "buff": 0
+            "buff": 100
         },
         "\u7eba\u7ec7\u5382": {
-            "star": 5,
+            "star": 4,
             "level": 800,
-            "buff": 0
+            "buff": 100
         },
         "\u96f6\u4ef6\u5382": {
-            "star": 5,
+            "star": 4,
             "level": 800,
             "buff": 0
         },
         "\u4f01\u9e45\u673a\u68b0": {
-            "star": 5,
+            "star": 2,
             "level": 800,
             "buff": 0
         },
         "\u4eba\u6c11\u77f3\u6cb9": {
-            "star": 5,
+            "star": 1,
             "level": 800,
             "buff": 0
         }
     },
     "buffs": {
         "policy": {
-            "global": 0,
-            "online": 0,
-            "residence": 0,
-            "commerce": 0,
-            "industry": 0,
-            "jiaguozhiguang": 0
+            "global": 600,
+            "online": 200,
+            "residence": 300,
+            "commerce": 900,
+            "industry": 1200,
+            "jiaguozhiguang": 180
         },
         "album": {
-            "global": 0,
-            "online": 0,
-            "residence": 0,
-            "commerce": 0,
-            "industry": 0
+            "global": 180,
+            "online": 160,
+            "residence": 300,
+            "commerce": 300,
+            "industry": 270
         },
         "mission": {
             "global": 0,
