@@ -21,10 +21,10 @@
 
 - #### 发布版：
 
-  百度网盘地址：https://pan.baidu.com/s/199Nor5Wk30bYCoYAvOGGuA 
-  提取码：14f3 
+  百度网盘链接：https://pan.baidu.com/s/1nlP_24rIXvjaqEXbex7oQw 
+  提取码：gooi 
 
-  打开**calculator.exe**即可畅享所有功能！
+  打开**main.exe**即可畅享所有功能！
 
 - #### 源代码版：
 	
