@@ -4,26 +4,6 @@ commerce_buildings = '便利店 五金店 服装店 菜市场 学校 图书城 �
 residence_buildings = '木屋 居民楼 钢结构房 平房 小型公寓 人才公寓 花园洋房 中式小楼 空中别墅 复兴公馆'.split()
 industry_buildings = '木材厂 食品厂 造纸厂 水厂 电厂 钢铁厂 纺织厂 零件厂 企鹅机械 人民石油'.split()
 
-Policy = {
-    'Global':  6,
-    'Online':  2,
-    'Offline': 0,
-    'Residence': 3,
-    'Commercial': 9,
-    'Industry': 9,
-    'JiaGuoZhiGuang': 0.9
-}
-
-Photos = {
-    'Global':  1.4,
-    'Online':  1.4,
-    'Offline': 0.7,
-    'Residence': 2.4,
-    'Commercial': 3,
-    'Industry': 2.1,
-}
-
-
 class BuildingGroupBox(QtWidgets.QGroupBox):
     def __init__(self, widget, rect, name, title):
         super().__init__(widget)
@@ -81,10 +61,29 @@ class BuildingGroupBox(QtWidgets.QGroupBox):
 
 
 class BuffGroupBox(QtWidgets.QGroupBox):
-    def __init__(self, widget, rect, name):
+    def __init__(self, widget, rect, name, title):
         super().__init__(widget)
         self.setGeometry(rect)
         self.setObjectName(name)
+        self.setTitle(title)
+
+        self.buff = []
+        self.buff_names = ["所有建筑的收入增加", "在线时所有建筑的收入增加", "住宅建筑的收入增加", "商业建筑的收入增加", "工业建筑的收入增加"]
+        for name in self.buff_names:
+            self.add_buff(name)
+
+    def add_buff(self, name):
+        y = len(self.buff) * 25 + 25
+
+        label = QtWidgets.QLabel(self)
+        label.setGeometry(QtCore.QRect(10, y, 150, 16))
+        label.setText(name)
+
+        buffLineEdit = QtWidgets.QLineEdit(self)
+        buffLineEdit.setGeometry(QtCore.QRect(160, y, 60, 20))
+        buffLineEdit.setObjectName(name + "buff")
+
+        self.buff.append(buffLineEdit)
 
 
 class Ui_MainWindow(object):
@@ -106,9 +105,14 @@ class Ui_MainWindow(object):
         for building in industry_buildings:
             self.industryGroupBox.add_building(building)
 
-        self.policyGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(10, 350, 251, 191), "policy")
-        self.albumGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(270, 350, 251, 191), "album")
-        self.missionGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(530, 350, 251, 191), "mission")
+        self.policyGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(10, 340, 250, 160), "policy", "政策加成")
+        self.albumGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(270, 340, 250, 160), "album", "相册加成")
+        self.missionGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(530, 340, 250, 160), "mission", "城市任务加成")
+
+        self.saveButton = QtWidgets.QPushButton(self.centralwidget)
+        self.saveButton.setGeometry(QtCore.QRect(400, 520, 101, 23))
+        self.saveButton.setObjectName("saveButton")
+        self.saveButton.setText("保存建筑信息")
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -121,6 +125,3 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "家国梦建筑最优化计算器"))
-        self.policyGroupBox.setTitle(_translate("MainWindow", "政策加成"))
-        self.missionGroupBox.setTitle(_translate("MainWindow", "城市任务加成"))
-        self.albumGroupBox.setTitle(_translate("MainWindow", "相片加成"))
