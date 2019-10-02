@@ -111,8 +111,8 @@ class Calculator:
                     Residence.remove(build)
             totalBuilds = Business + Residence + Industrial
 
-        BaseIncome = pd.read_csv('baseIncome.csv', encoding='gb2312')
-        self.Upgrade = pd.read_csv('upgrade.csv')
+        BaseIncome = pd.read_csv('data/baseIncome.csv', encoding='gb2312')
+        self.Upgrade = pd.read_csv('data/upgrade.csv')
 
         searchSpace = product(combinations(Industrial, 3),
                               combinations(Business, 3), combinations(Residence, 3))
