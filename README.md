@@ -15,13 +15,13 @@
 
 ## 使用方法：
 
-- ##### 发布版（即将更新）：
+- #### 发布版（即将更新）：
 
   百度网盘地址：（即将更新）
 
   打开**calculator.exe**即可畅享所有功能！
 
-- ##### 源代码版：
+- #### 源代码版：
 	
 	1. 在github页面右上角找到clone or download，点击download ZIP将源代码下载到本地并解压（顺便可以点击一下star支持一下我哦）
 	2. 访问[python官网](https://www.python.org/downloads/windows/)下载python
@@ -33,8 +33,8 @@
 	8. （安装依赖模块之方法二）在解压后的源代码文件夹中打开cmd（在顶部导航栏输入cmd即可），然后输入`pip install requirements.txt`（该方法即将更新）
 	9. 在解压后的源代码文件夹中打开cmd，输入`python main.py`
 	
-- ##### 可能出现的问题
-　　
+- #### 可能出现的问题
+
 　　出现其他类似:`ModuleNotFoundError: No module named 'XXX'`的提示，参照环境搭建第七条输入`python -m pip install --user XXX`安装依赖模块
 　　
 　　
