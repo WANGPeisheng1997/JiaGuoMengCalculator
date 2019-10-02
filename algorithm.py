@@ -3,10 +3,12 @@ from tqdm import tqdm
 from queue import PriorityQueue as PQ
 import os
 import pandas as pd
-from scipy.special import comb
 from itertools import combinations, product
 from collections import defaultdict as ddict
 import static
+
+def comb(a, b):
+    return a * (a-1) * (a-2) / 6
 
 class NamedPQ(object):
     def __init__(self, priority, name):
@@ -89,6 +91,7 @@ class Calculator:
     def showLetterNum(self, num):
         index = list(static.UnitDict.keys())[int(np.log10(num))//3]
         return str(np.round(num/static.UnitDict[index], 2)) + index
+
 
 
     def calculate(self):

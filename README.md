@@ -19,9 +19,10 @@
 
 ## 使用方法：
 
-- #### 发布版（即将更新）：
+- #### 发布版：
 
-  百度网盘地址：（即将更新）
+  百度网盘地址：https://pan.baidu.com/s/199Nor5Wk30bYCoYAvOGGuA 
+  提取码：14f3 
 
   打开**calculator.exe**即可畅享所有功能！
 
@@ -34,7 +35,7 @@
 	5. 安装首页勾选 Add Python to Path 点击Install Now（推荐）或自定义路径
 	6. 打开cmd，输入python -V，出现版本号为安装成功
 	7. （安装依赖模块之方法一）在cmd中输入`python -m pip install --user numpy scipy tqdm pandas pyqt5`
-	8. （安装依赖模块之方法二）在解压后的源代码文件夹中打开cmd（在顶部导航栏输入cmd即可），然后输入`pip install requirements.txt`（该方法即将更新）
+	8. （安装依赖模块之方法二）在解压后的源代码文件夹中打开cmd（在顶部导航栏输入cmd即可），然后输入`pip install requirements.txt`
 	9. 在解压后的源代码文件夹中打开cmd，输入`python main.py`
 
 - #### 可能出现的问题
