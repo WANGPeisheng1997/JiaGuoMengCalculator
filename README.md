@@ -1,3 +1,7 @@
+---
+typora-root-url: ./
+---
+
 # JiaGuoMengCalculator
 家国梦建筑最优化计算器(2019.10.2更新)
 
@@ -6,12 +10,16 @@
 ## 功能：
 
 - 按照当前的建筑星级、等级、各项加成枚举计算收益最高的建筑排布
-
 - 按照现有的金钱余额贪心搜索最佳的升级方案（即将更新）
-
 - 可视化界面随时保存并读取建筑的各项信息以及计算的结果
 
-  
+
+
+## 界面截图：
+
+![](/screenshot.png)
+
+
 
 ## 使用方法：
 
@@ -32,7 +40,7 @@
 	7. （安装依赖模块之方法一）在cmd中输入`python -m pip install --user numpy scipy tqdm pandas pyqt5`
 	8. （安装依赖模块之方法二）在解压后的源代码文件夹中打开cmd（在顶部导航栏输入cmd即可），然后输入`pip install requirements.txt`（该方法即将更新）
 	9. 在解压后的源代码文件夹中打开cmd，输入`python main.py`
-	
+
 - #### 可能出现的问题
 
 　　出现其他类似:`ModuleNotFoundError: No module named 'XXX'`的提示，参照环境搭建第七条输入`python -m pip install --user XXX`安装依赖模块
