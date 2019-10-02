@@ -1,5 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import json
+from algorithm import Calculator
+import os
 
 commerce_buildings = '便利店 五金店 服装店 菜市场 学校 图书城 商贸中心 加油站 民食斋 媒体之声'.split()
 residence_buildings = '木屋 居民楼 钢结构房 平房 小型公寓 人才公寓 花园洋房 中式小楼 空中别墅 复兴公馆'.split()
@@ -167,10 +169,16 @@ class Ui_MainWindow(object):
                 self.missionGroupBox.buff[count].setText(str(buff_dict[buff_type]))
 
         self.saveButton = QtWidgets.QPushButton(self.centralwidget)
-        self.saveButton.setGeometry(QtCore.QRect(400, 520, 101, 23))
+        self.saveButton.setGeometry(QtCore.QRect(200, 520, 100, 23))
         self.saveButton.setObjectName("saveButton")
         self.saveButton.setText("保存建筑信息")
         self.saveButton.clicked.connect(self.save_info)
+
+        self.calculateButton = QtWidgets.QPushButton(self.centralwidget)
+        self.calculateButton.setGeometry(QtCore.QRect(600, 520, 100, 23))
+        self.calculateButton.setObjectName("calculateButton")
+        self.calculateButton.setText("计算最优排布")
+        self.calculateButton.clicked.connect(self.calculate)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -202,3 +210,11 @@ class Ui_MainWindow(object):
     def load_config(self):
         self.buildings_config = self.config["buildings"]
         self.buffs_config = self.config["buffs"]
+
+    def calculate(self):
+        if os.path.exists("config.json"):
+            file = open('config.json', 'r')
+            config = json.load(file)
+            file.close()
+        calculator = Calculator(config)
+        calculator.calculate()
