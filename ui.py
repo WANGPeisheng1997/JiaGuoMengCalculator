@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+import json
 
 commerce_buildings = '便利店 五金店 服装店 菜市场 学校 图书城 商贸中心 加油站 民食斋 媒体之声'.split()
 residence_buildings = '木屋 居民楼 钢结构房 平房 小型公寓 人才公寓 花园洋房 中式小楼 空中别墅 复兴公馆'.split()
@@ -44,20 +45,30 @@ class BuildingGroupBox(QtWidgets.QGroupBox):
 
         starLineEdit = QtWidgets.QLineEdit(self)
         starLineEdit.setGeometry(QtCore.QRect(80, y, 40, 20))
-        starLineEdit.setObjectName(name + "star")
+        starLineEdit.setText("5")
 
         levelLineEdit = QtWidgets.QLineEdit(self)
         levelLineEdit.setGeometry(QtCore.QRect(130, y, 40, 20))
-        levelLineEdit.setObjectName(name + "level")
+        levelLineEdit.setText("800")
 
         buffLineEdit = QtWidgets.QLineEdit(self)
         buffLineEdit.setGeometry(QtCore.QRect(180, y, 80, 20))
-        buffLineEdit.setObjectName(name + "buff")
+        buffLineEdit.setText("0")
 
         self.buildings_label.append(label)
         self.buildings_star.append(starLineEdit)
         self.buildings_level.append(levelLineEdit)
         self.buildings_buff.append(buffLineEdit)
+
+    def get_buildings_info(self):
+        buildings_info = {}
+        for count in range(len(self.buildings_label)):
+            name = self.buildings_label[count].text()
+            star = self.buildings_star[count].text()
+            level = self.buildings_level[count].text()
+            buff = self.buildings_buff[count].text()
+            buildings_info[name] = {"star": int(star), "level": int(level), "buff": int(buff)}
+        return buildings_info
 
 
 class BuffGroupBox(QtWidgets.QGroupBox):
@@ -68,9 +79,11 @@ class BuffGroupBox(QtWidgets.QGroupBox):
         self.setTitle(title)
 
         self.buff = []
-        self.buff_names = ["所有建筑的收入增加", "在线时所有建筑的收入增加", "住宅建筑的收入增加", "商业建筑的收入增加", "工业建筑的收入增加"]
-        for name in self.buff_names:
-            self.add_buff(name)
+        self.buff_labels = ["所有建筑的收入增加", "在线时所有建筑的收入增加", "住宅建筑的收入增加", "商业建筑的收入增加", "工业建筑的收入增加"]
+        self.buff_types = ["global", "online", "residence", "commerce", "industry"]
+
+        for label in self.buff_labels:
+            self.add_buff(label)
 
     def add_buff(self, name):
         y = len(self.buff) * 25 + 25
@@ -81,9 +94,17 @@ class BuffGroupBox(QtWidgets.QGroupBox):
 
         buffLineEdit = QtWidgets.QLineEdit(self)
         buffLineEdit.setGeometry(QtCore.QRect(160, y, 60, 20))
-        buffLineEdit.setObjectName(name + "buff")
+        buffLineEdit.setText("0")
 
         self.buff.append(buffLineEdit)
+
+    def get_buffs_info(self):
+        buffs_info = {}
+        for count in range(len(self.buff_types)):
+            type = self.buff_types[count]
+            value = self.buff[count].text()
+            buffs_info[type] = int(value)
+        return buffs_info
 
 
 class Ui_MainWindow(object):
@@ -105,7 +126,10 @@ class Ui_MainWindow(object):
         for building in industry_buildings:
             self.industryGroupBox.add_building(building)
 
-        self.policyGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(10, 340, 250, 160), "policy", "政策加成")
+        self.policyGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(10, 340, 250, 180), "policy", "政策加成")
+        self.policyGroupBox.add_buff("家国之光的收入增加")
+        self.policyGroupBox.buff_labels.append("家国之光的收入增加")
+        self.policyGroupBox.buff_types.append("jiaguozhiguang")
         self.albumGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(270, 340, 250, 160), "album", "相册加成")
         self.missionGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(530, 340, 250, 160), "mission", "城市任务加成")
 
@@ -113,6 +137,7 @@ class Ui_MainWindow(object):
         self.saveButton.setGeometry(QtCore.QRect(400, 520, 101, 23))
         self.saveButton.setObjectName("saveButton")
         self.saveButton.setText("保存建筑信息")
+        self.saveButton.clicked.connect(self.save_info)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -125,3 +150,27 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "家国梦建筑最优化计算器"))
+
+    def save_info(self):
+        residence_buildings_info = self.residenceGroupBox.get_buildings_info()
+        commerce_buildings_info = self.commerceGroupBox.get_buildings_info()
+        industry_buildings_info = self.industryGroupBox.get_buildings_info()
+        all_buildings_info = {**residence_buildings_info, **commerce_buildings_info, **industry_buildings_info}
+        policy_buffs_info = self.policyGroupBox.get_buffs_info()
+        album_buffs_info = self.albumGroupBox.get_buffs_info()
+        mission_buffs_info = self.missionGroupBox.get_buffs_info()
+        all_buffs_info = {"policy": policy_buffs_info, "album": album_buffs_info, "mission": mission_buffs_info}
+        all_info = {"buildings": all_buildings_info, "buffs": all_buffs_info}
+        js = json.dumps(all_info, indent=4, separators=(',', ': '))
+        file = open('config.json', 'w')
+        file.write(js)
+        file.close()
+        file = open('config.json', 'r')
+        dicts = json.load(file)
+        file.close()
+        print(dicts)
+
+
+
+
+
