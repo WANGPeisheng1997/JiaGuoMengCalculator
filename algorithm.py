@@ -1,10 +1,8 @@
 import numpy as np
 from tqdm import tqdm
 from queue import PriorityQueue as PQ
-import os
 import pandas as pd
 from itertools import combinations, product
-from collections import defaultdict as ddict
 import static
 
 def comb(a, b):
@@ -99,9 +97,9 @@ class Calculator:
             print('单位错误,请检查金币输入')
 
         if self.mode == 'Online':
-            Industrial = static.Industrial.split()
-            Business = static.Business.split()
-            Residence = static.Residence.split()
+            Industrial = static.industry_buildings
+            Business = static.commerce_buildings
+            Residence = static.residence_buildings
             for build in self.blacklist:
                 if build in Industrial:
                     Industrial.remove(build)
