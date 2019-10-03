@@ -25,19 +25,19 @@ class Calculator:
 
     def __init__(self, config):
         self.config = config
-        self.buildings_config = self.config["buildings"]
-        self.buffs_config = self.config["buffs"]
+        self.buildings_config = config.buildings_config
+        self.buffs_config = config.buffs_config
         self.policy_buff = self.buffs_config["policy"]
         self.album_buff = self.buffs_config["album"]
         self.mission_buff = self.buffs_config["mission"]
-        self.blacklist = self.config["blacklist"]
+        self.blacklist = config.blacklist_config
 
         self.buildStars = {1: [], 2: [], 3: [], 4: [], 5: []}
         for build in self.buildings_config:
             star = self.buildings_config[build]["star"]
             self.buildStars[star].append(build)
 
-        self.mode = 'Online'  # 这个先不要改，后面计划增加供货模式和离线模式
+        self.mode = 'online'
         self.totalGold = '1 aa'
 
     def calculateComb(self, buildings):
@@ -96,7 +96,7 @@ class Calculator:
         except KeyError:
             print('单位错误,请检查金币输入')
 
-        if self.mode == 'Online':
+        if self.mode == 'online':
             Industrial = static.industry_buildings
             Business = static.commerce_buildings
             Residence = static.residence_buildings

@@ -280,8 +280,10 @@ class Ui_MainWindow(object):
     def calculate(self):
         self.save_info()
         file = open('config.json', 'r')
-        config = json.load(file)
+        json_config = json.load(file)
         file.close()
+        config = Config()
+        config.init_config_from_json(json_config)
         calculator = Calculator(config)
         calculator.calculate()
         resultFile = open("result.txt", 'r')
