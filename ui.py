@@ -3,7 +3,8 @@ import json
 from algorithm import Calculator
 import os
 from config import Config
-from static import residence_buildings, commerce_buildings, industry_buildings, default_blacklist
+from static import residence_buildings, commerce_buildings, industry_buildings, default_blacklist, modes
+from update import get_latest_version
 
 
 class BuildingGroupBox(QtWidgets.QGroupBox):
@@ -150,7 +151,7 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1330, 600)
+        MainWindow.resize(1330, 620)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
@@ -213,10 +214,18 @@ class Ui_MainWindow(object):
         self.resultLabel.setText("")
         self.resultLabel.setAlignment(QtCore.Qt.AlignTop)
 
-        self.versionLabel = QtWidgets.QLabel(self.resultGroupBox)
-        self.resultLabel.setGeometry(QtCore.QRect(20, 20, 250, 500))
-        self.resultLabel.setText("")
-        self.resultLabel.setAlignment(QtCore.Qt.AlignTop)
+        self.lastestVersionLabel = QtWidgets.QLabel(self.centralwidget)
+        self.lastestVersionLabel.setGeometry(QtCore.QRect(20, 530, 250, 20))
+        self.lastestVersionLabel.setText(get_latest_version())
+
+        self.currentVersionLabel = QtWidgets.QLabel(self.centralwidget)
+        self.currentVersionLabel.setGeometry(QtCore.QRect(20, 550, 250, 20))
+        self.currentVersionLabel.setText("当前本地版本：V2.0 Beta 2")
+
+        self.openUrlLabel = QtWidgets.QLabel(self.centralwidget)
+        self.openUrlLabel.setGeometry(QtCore.QRect(20, 580, 270, 20))
+        self.openUrlLabel.setText('<a href="https://github.com/WANGPeisheng1997/JiaGuoMengCalculator" style="color:#0000ff;">下载最新版本</a>')
+        self.openUrlLabel.setOpenExternalLinks(True)
 
         self.saveButton = QtWidgets.QPushButton(self.centralwidget)
         self.saveButton.setGeometry(QtCore.QRect(440, 540, 100, 23))
@@ -258,7 +267,11 @@ class Ui_MainWindow(object):
             if child.isChecked():
                 blacklist.append(building)
 
-        all_info = {"buildings": all_buildings_info, "buffs": all_buffs_info, "blacklist": blacklist}
+        whitelist = []
+        mode = modes[self.modeComboBox.currentIndex()]
+        gold = self.goldLineEdit.text()
+
+        all_info = {"buildings": all_buildings_info, "buffs": all_buffs_info, "blacklist": blacklist, "whitelist": whitelist, "mode": mode, "gold": gold}
         js = json.dumps(all_info, indent=4, separators=(',', ': '))
         file = open('config.json', 'w')
         file.write(js)
