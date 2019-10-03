@@ -35,7 +35,7 @@ class Config:
 
     def init_config_from_local(self):
         self.mode_config = 'online'  # 在线模式填online，离线模式填offline，供货模式填train
-        self.blacklist_config = '小型公寓 水厂 花园洋房 复兴公馆 加油站 人民石油'.split() # 这里填写不想要或未解锁的建筑
+        self.blacklist_config = '商贸中心 小型公寓 水厂 花园洋房 复兴公馆 加油站 人民石油'.split() # 这里填写不想要或未解锁的建筑
         self.whitelist_config = '商贸中心 复兴公馆 小型公寓 花园洋房'.split() # 这里填写一定要的建筑
 
         '''
@@ -130,7 +130,7 @@ class Config:
             建议初次使用金币不超过当前秒伤的1000倍！
         '''
 
-        self.gold_config = '1K'
+        self.gold_config = '0'
 
         '''
             以下部分请不要随意改动

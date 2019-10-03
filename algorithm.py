@@ -38,9 +38,15 @@ class Calculator:
             self.buildStars[star].append(build)
 
         self.mode = 'online'
-        self.totalGold = '1 aa'
+        self.totalGold = config.gold_config
 
-    def calculateComb(self, buildings):
+    def showLetterNum(self, num):
+        index = list(static.UnitDict.keys())[int(np.log10(num))//3]
+        return str(np.round(num/static.UnitDict[index], 2)) + index
+
+    def calculateComb(self, buildings, MaxIncome=0, output=False):
+        NowEffect = 1e300
+        NeededEffect = 0
         Golds = self.totalGold
         buildtuple = buildings[0] + buildings[1] + buildings[2]
         NowGrade = [self.buildings_config[build]["level"] for build in buildtuple]
@@ -65,36 +71,83 @@ class Calculator:
                     comboBuff[buildtuple[7]] += buffMultiple
                     comboBuff[buildtuple[8]] += buffMultiple
 
-    #    upgradePQ = PQ()
-    #    for i, build in enumerate(buildtuple):
-    #        upgradePQ.put(NamedPQ(Upgrade['Ratio'+Rarities[i]].iloc[NowGrade[i]-1],
-    #                              i))
-    #    while Golds > 0:
-    #        build = upgradePQ.get().name
-    #        Golds -= Upgrade[Rarities[i]].iloc[NowGrade[i]+1]
-    #        NowGrade[i] += 1 # upgrade build
-    #        upgradePQ.put(NamedPQ(Upgrade['Ratio'+Rarities[i]].iloc[NowGrade[i]-1],
-    #                              i))
+        basemultiples = [self.buildsDict[build]['baseIncome'] * comboBuff[build] \
+                         for i, build in enumerate(buildtuple)]
+        IncomeUnupgrade = sum([basemultiples[i] * \
+                               self.Upgrade.incomePerSec.iloc[NowGrade[i] - 1] \
+                               for i, build in enumerate(buildtuple)])
+        Income = IncomeUnupgrade
+        upgradePQ = PQ()
+        for i, build in enumerate(buildtuple):
+            upgradePQ.put(NamedPQ(-self.Upgrade['Ratio' + Rarities[i]].iloc[NowGrade[i] - 1] * basemultiples[i],
+                                  i))
 
-        multiples = [self.buildsDict[build]['baseIncome'] * comboBuff[build] * \
-                     self.Upgrade.incomePerSec.iloc[NowGrade[i]-1]\
-                     for i, build in enumerate(buildtuple)]
-        TotalIncome = sum(multiples)
-        return (TotalIncome, (NowGrade, multiples))
+        while Golds > 0 and NowEffect > NeededEffect:
+            i = upgradePQ.get().name
+            NowGradeI = NowGrade[i]
+            if NowGradeI < 2000:
+                Golds -= self.Upgrade[Rarities[i]].iloc[NowGrade[i] + 1]
+                NowGrade[i] += 1  # upgrade build
+                upgradePQ.put(NamedPQ(-self.Upgrade['Ratio' + Rarities[i]].iloc[NowGrade[i] - 1] * basemultiples[i],
+                                      i))
+                Income += self.Upgrade.incomeIncrease.iloc[NowGrade[i]] * basemultiples[i]
+                NowEffect = (Income - IncomeUnupgrade) / (self.totalGold - Golds)
+                NeededEffect = (MaxIncome - Income) / Golds
+            elif upgradePQ.empty():
+                break
 
+        if output:
+            resultFile = open("result.txt", 'w')
+            print('最优策略：', file=resultFile)
+            print('工业建筑：%s、%s、%s' % (buildings[0]), file=resultFile)
+            print('商业建筑：%s、%s、%s' % (buildings[1]), file=resultFile)
+            print('住宅建筑：%s、%s、%s' % (buildings[2]), file=resultFile)
 
-    def showLetterNum(self, num):
-        index = list(static.UnitDict.keys())[int(np.log10(num))//3]
-        return str(np.round(num/static.UnitDict[index], 2)) + index
+            print(file=resultFile)
+            print('总秒伤：', self.showLetterNum(Income), file=resultFile)
+            print(file=resultFile)
 
+            print('各建筑等级：', file=resultFile)
+            for i, build in enumerate(buildtuple):
+                print('{:<8}\t'.format(build), NowGrade[i], file=resultFile)
+            print(file=resultFile)
 
+            multiples = [basemultiples[i] * self.Upgrade.incomePerSec.iloc[NowGrade[i] - 1] \
+                         for i, build in enumerate(buildtuple)]
+            print('各建筑秒伤：', file=resultFile)
+            for i, x in enumerate(multiples):
+                print('{:<8}\t'.format(buildtuple[i]), self.showLetterNum(x), file=resultFile)
+            print(file=resultFile)
+
+            if not upgradePQ.empty():
+                ToUpgrade = upgradePQ.get()
+                print('优先升级:', buildtuple[ToUpgrade.name], file=resultFile)
+                print('每金币收益:', -ToUpgrade.priority, file=resultFile)
+
+            resultFile.close()
+        else:
+            return Income, (buildings, NowGrade), NowEffect
 
     def calculate(self):
-        GoldNum, Unit = self.totalGold.split()
-        try:
-            self.totalGold = float(GoldNum) * static.UnitDict[Unit]
-        except KeyError:
-            print('单位错误,请检查金币输入')
+
+        if self.totalGold == "0":
+            self.totalGold = 0
+        else:
+            # find unit
+            success = False
+            for unit in static.UnitDict:
+                pos = self.totalGold.find(unit)
+                if pos != -1:
+                    # this is the unit
+                    GoldNum, Unit = self.totalGold[:pos], self.totalGold[pos:]
+                    print(GoldNum, Unit)
+                    self.totalGold = float(GoldNum) * static.UnitDict[Unit]
+                    success = True
+                    print(self.totalGold)
+                    break
+            if not success:
+                print('单位错误,请检查金币输入')
+                return
 
         if self.mode == 'online':
             Industrial = static.industry_buildings
@@ -153,29 +206,16 @@ class Calculator:
 
         results = PQ()
 
-        Max = 0
+        MaxIncome = 0
+        MaxStat = 0
+
         for buildings in tqdm(searchSpace, total=searchSpaceSize,
                               bar_format='{percentage:3.0f}%,{elapsed}<{remaining}|{bar}|{n_fmt}/{total_fmt},{rate_fmt}{postfix}'):
-            TotalIncome, Stat = self.calculateComb(buildings)
-            results.put(NamedPQ(-TotalIncome, (buildings, Stat)))
+            TotalIncome, Stat, NowEffect = self.calculateComb(buildings, MaxIncome)
+            if TotalIncome > MaxIncome:
+                MaxIncome = TotalIncome
+                MaxStat = Stat
+                MaxEffect = NowEffect
 
-        Best = results.get()
-
-        resultFile = open("result.txt", 'w')
-        print('最优策略：', file=resultFile)
-        print('工业建筑：%s、%s、%s' % (Best.name[0][0]), file=resultFile)
-        print('商业建筑：%s、%s、%s' % (Best.name[0][1]), file=resultFile)
-        print('住宅建筑：%s、%s、%s' % (Best.name[0][2]), file=resultFile)
-
-        print(file=resultFile)
-        print('总秒伤：', self.showLetterNum(-Best.priority), file=resultFile)
-        print(file=resultFile)
-        print('各建筑等级：', file=resultFile)
-        for i, x in enumerate(Best.name[1][0]):
-            print('{:<8}\t'.format(Best.name[0][i // 3][i % 3]), x, file=resultFile)
-        print(file=resultFile)
-        print('各建筑秒伤：', file=resultFile)
-        for i, x in enumerate(Best.name[1][1]):
-            print('{:<8}\t'.format(Best.name[0][i//3][i % 3]), self.showLetterNum(x), file=resultFile)
-        resultFile.close()
+        self.calculateComb(MaxStat[0], output=True)
 

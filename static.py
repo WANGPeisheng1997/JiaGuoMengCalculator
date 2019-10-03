@@ -1,7 +1,7 @@
 commerce_buildings = '便利店 五金店 服装店 菜市场 学校 图书城 商贸中心 加油站 民食斋 媒体之声'.split()
 residence_buildings = '木屋 居民楼 钢结构房 平房 小型公寓 人才公寓 花园洋房 中式小楼 空中别墅 复兴公馆'.split()
 industry_buildings = '木材厂 食品厂 造纸厂 水厂 电厂 钢铁厂 纺织厂 零件厂 企鹅机械 人民石油'.split()
-default_blacklist = "商贸中心 小型公寓 水厂 花园洋房 复兴公馆 加油站 人民石油".split()
+default_blacklist = "商贸中心 小型公寓 水厂 花园洋房 复兴公馆 加油站 人民石油 纺织厂 钢结构房 钢铁厂 菜市场".split()
 modes = ["online", "offline", "train"]
 buffs_100 = {
                 '木屋': ['木材厂'],

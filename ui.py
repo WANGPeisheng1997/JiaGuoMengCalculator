@@ -263,7 +263,7 @@ class Ui_MainWindow(object):
 
         blacklist = []
         for building in commerce_buildings + residence_buildings + industry_buildings:
-            child = self.findChild(QtWidgets.QCheckBox, building + "black")
+            child = self.centralwidget.findChild(QtWidgets.QCheckBox, building + "black")
             if child.isChecked():
                 blacklist.append(building)
 
