@@ -2,22 +2,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import json
 from algorithm import Calculator
 import os
-
-commerce_buildings = '便利店 五金店 服装店 菜市场 学校 图书城 商贸中心 加油站 民食斋 媒体之声'.split()
-residence_buildings = '木屋 居民楼 钢结构房 平房 小型公寓 人才公寓 花园洋房 中式小楼 空中别墅 复兴公馆'.split()
-industry_buildings = '木材厂 食品厂 造纸厂 水厂 电厂 钢铁厂 纺织厂 零件厂 企鹅机械 人民石油'.split()
-default_blacklist = "商贸中心 小型公寓 水厂 花园洋房 复兴公馆 加油站 人民石油".split()
-
-
-class Config:
-    def __init__(self, json_config):
-        self.json_config = json_config
-        self.buildings_config = json_config["buildings"]
-        self.buffs_config = json_config["buffs"]
-        if "blacklist" in json_config:
-            self.blacklist_config = json_config["blacklist"]
-        else:
-            self.blacklist_config = []
+from config import Config
+from static import residence_buildings, commerce_buildings, industry_buildings, default_blacklist
 
 
 class BuildingGroupBox(QtWidgets.QGroupBox):
@@ -74,9 +60,15 @@ class BuildingGroupBox(QtWidgets.QGroupBox):
         label.setGeometry(QtCore.QRect(10, y, 70, 16))
         label.setText(name)
 
-        starLineEdit = QtWidgets.QLineEdit(self)
-        starLineEdit.setGeometry(QtCore.QRect(80, y, 40, 20))
-        starLineEdit.setText(str(star_default))
+        # starLineEdit = QtWidgets.QLineEdit(self)
+        # starLineEdit.setGeometry(QtCore.QRect(80, y, 40, 20))
+        # starLineEdit.setText(str(star_default))
+
+        starSpinBox = QtWidgets.QSpinBox(self)
+        starSpinBox.setMaximum(5)
+        starSpinBox.setMinimum(1)
+        starSpinBox.setGeometry(QtCore.QRect(80, y, 40, 20))
+        starSpinBox.setValue(star_default)
 
         levelLineEdit = QtWidgets.QLineEdit(self)
         levelLineEdit.setGeometry(QtCore.QRect(130, y, 40, 20))
@@ -93,7 +85,7 @@ class BuildingGroupBox(QtWidgets.QGroupBox):
             blackListCheckBox.setChecked(True)
 
         self.buildings_label.append(label)
-        self.buildings_star.append(starLineEdit)
+        self.buildings_star.append(starSpinBox)
         self.buildings_level.append(levelLineEdit)
         self.buildings_buff.append(buffLineEdit)
 
@@ -101,7 +93,7 @@ class BuildingGroupBox(QtWidgets.QGroupBox):
         buildings_info = {}
         for count in range(len(self.buildings_label)):
             name = self.buildings_label[count].text()
-            star = self.buildings_star[count].text()
+            star = self.buildings_star[count].value()
             level = self.buildings_level[count].text()
             buff = self.buildings_buff[count].text()
             buildings_info[name] = {"star": int(star), "level": int(level), "buff": int(buff)}
@@ -153,7 +145,8 @@ class Ui_MainWindow(object):
             file = open('config.json', 'r')
             json_config = json.load(file)
             file.close()
-            self.config = Config(json_config)
+            self.config = Config()
+            self.config.init_config_from_json(json_config)
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -173,19 +166,43 @@ class Ui_MainWindow(object):
         for building in industry_buildings:
             self.industryGroupBox.add_building(building, self.config)
 
-        self.policyGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(10, 340, 330, 180), "policy", "政策加成")
-        self.policyGroupBox.buff_labels.append("家国之光的收入增加(%)")
+        self.policyGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(10, 340, 270, 180), "policy", "政策加成")
+        self.policyGroupBox.buff_labels.append("家国之光与国庆的收入增加(%)")
         self.policyGroupBox.buff_types.append("jiaguozhiguang")
         for count in range(len(self.policyGroupBox.buff_labels)):
             self.policyGroupBox.add_buff(name=self.policyGroupBox.buff_labels[count], big_type="policy", small_type=self.policyGroupBox.buff_types[count], config=self.config)
 
-        self.albumGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(350, 340, 330, 160), "album", "相册加成")
+        self.albumGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(290, 340, 270, 160), "album", "相册加成")
         for count in range(len(self.albumGroupBox.buff_labels)):
             self.albumGroupBox.add_buff(name=self.albumGroupBox.buff_labels[count], big_type="album", small_type=self.albumGroupBox.buff_types[count], config=self.config)
 
-        self.missionGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(690, 340, 330, 160), "mission", "城市任务加成")
+        self.missionGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(570, 340, 270, 160), "mission", "城市任务加成")
         for count in range(len(self.missionGroupBox.buff_labels)):
             self.missionGroupBox.add_buff(name=self.missionGroupBox.buff_labels[count], big_type="mission", small_type=self.missionGroupBox.buff_types[count], config=self.config)
+
+        self.othersGroupBox = QtWidgets.QGroupBox(self.centralwidget)
+        self.othersGroupBox.setGeometry(QtCore.QRect(850, 340, 170, 160))
+        self.othersGroupBox.setTitle("其他选项")
+
+        self.modeLabel = QtWidgets.QLabel(self.othersGroupBox)
+        self.modeLabel.setGeometry(QtCore.QRect(20, 20, 60, 20))
+        self.modeLabel.setText("模式")
+
+        self.modeComboBox = QtWidgets.QComboBox(self.othersGroupBox)
+        self.modeComboBox.setGeometry(QtCore.QRect(90, 20, 60, 20))
+        self.modeComboBox.addItems(["在线", "离线", "火车"])
+
+        self.goldLabel = QtWidgets.QLabel(self.othersGroupBox)
+        self.goldLabel.setGeometry(QtCore.QRect(20, 45, 60, 20))
+        self.goldLabel.setText("拥有金币")
+
+        self.goldLineEdit = QtWidgets.QLineEdit(self.othersGroupBox)
+        self.goldLineEdit.setGeometry(QtCore.QRect(90, 45, 60, 20))
+        self.goldLineEdit.setText("8.88aa")
+
+        self.helpLabel = QtWidgets.QLabel(self.othersGroupBox)
+        self.helpLabel.setGeometry(QtCore.QRect(20, 70, 140, 20))
+        self.helpLabel.setText("(金币直接按游戏内格式)")
 
         self.resultGroupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.resultGroupBox.setGeometry(QtCore.QRect(1030, 20, 280, 480))
@@ -196,10 +213,15 @@ class Ui_MainWindow(object):
         self.resultLabel.setText("")
         self.resultLabel.setAlignment(QtCore.Qt.AlignTop)
 
+        self.versionLabel = QtWidgets.QLabel(self.resultGroupBox)
+        self.resultLabel.setGeometry(QtCore.QRect(20, 20, 250, 500))
+        self.resultLabel.setText("")
+        self.resultLabel.setAlignment(QtCore.Qt.AlignTop)
+
         self.saveButton = QtWidgets.QPushButton(self.centralwidget)
         self.saveButton.setGeometry(QtCore.QRect(440, 540, 100, 23))
         self.saveButton.setObjectName("saveButton")
-        self.saveButton.setText("保存建筑信息")
+        self.saveButton.setText("保存配置文件")
         self.saveButton.clicked.connect(self.save_info)
 
         self.calculateButton = QtWidgets.QPushButton(self.centralwidget)
@@ -218,7 +240,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "家国梦建筑最优化计算器"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "家国梦建筑最优化计算器 V2.0 Beta 2"))
 
     def save_info(self):
         residence_buildings_info = self.residenceGroupBox.get_buildings_info()
