@@ -5,7 +5,6 @@ import os
 from config import Config
 from static import residence_buildings, commerce_buildings, industry_buildings, default_blacklist, modes
 from update import get_latest_version
-import threading
 
 
 class BuildingGroupBox(QtWidgets.QGroupBox):
@@ -201,7 +200,11 @@ class Ui_MainWindow(object):
 
         self.goldLineEdit = QtWidgets.QLineEdit(self.othersGroupBox)
         self.goldLineEdit.setGeometry(QtCore.QRect(90, 45, 60, 20))
-        self.goldLineEdit.setText(self.config.gold_config)
+        if self.config is None:
+            self.goldLineEdit.setText("8.88aa")
+        else:
+            self.goldLineEdit.setText(self.config.gold_config)
+
 
         self.helpLabel = QtWidgets.QLabel(self.othersGroupBox)
         self.helpLabel.setGeometry(QtCore.QRect(20, 70, 140, 20))
