@@ -4,6 +4,7 @@ from queue import PriorityQueue as PQ
 import pandas as pd
 from itertools import combinations, product
 import static
+import copy
 
 def comb(a, b):
     return a * (a-1) * (a-2) / 6
@@ -31,6 +32,7 @@ class Calculator:
         self.album_buff = self.buffs_config["album"]
         self.mission_buff = self.buffs_config["mission"]
         self.blacklist = config.blacklist_config
+        self.only_current = config.only_current
 
         self.buildStars = {1: [], 2: [], 3: [], 4: [], 5: []}
         for build in self.buildings_config:
@@ -77,58 +79,60 @@ class Calculator:
                                self.Upgrade.incomePerSec.iloc[NowGrade[i] - 1] \
                                for i, build in enumerate(buildtuple)])
         Income = IncomeUnupgrade
-        upgradePQ = PQ()
-        for i, build in enumerate(buildtuple):
-            upgradePQ.put(NamedPQ(-self.Upgrade['Ratio' + Rarities[i]].iloc[NowGrade[i] - 1] * basemultiples[i],
-                                  i))
 
-        while Golds > 0 and NowEffect > NeededEffect:
-            i = upgradePQ.get().name
-            NowGradeI = NowGrade[i]
-            if NowGradeI < 2000:
-                Golds -= self.Upgrade[Rarities[i]].iloc[NowGrade[i] + 1]
-                NowGrade[i] += 1  # upgrade build
+        if not self.only_current:
+            upgradePQ = PQ()
+            for i, build in enumerate(buildtuple):
                 upgradePQ.put(NamedPQ(-self.Upgrade['Ratio' + Rarities[i]].iloc[NowGrade[i] - 1] * basemultiples[i],
                                       i))
-                Income += self.Upgrade.incomeIncrease.iloc[NowGrade[i]] * basemultiples[i]
-                NowEffect = (Income - IncomeUnupgrade) / (self.totalGold - Golds)
-                NeededEffect = (MaxIncome - Income) / Golds
-            elif upgradePQ.empty():
-                break
+
+            while Golds > 0 and NowEffect > NeededEffect:
+                i = upgradePQ.get().name
+                NowGradeI = NowGrade[i]
+                if NowGradeI < 2000:
+                    Golds -= self.Upgrade[Rarities[i]].iloc[NowGrade[i] + 1]
+                    NowGrade[i] += 1  # upgrade build
+                    upgradePQ.put(NamedPQ(-self.Upgrade['Ratio' + Rarities[i]].iloc[NowGrade[i] - 1] * basemultiples[i],
+                                          i))
+                    Income += self.Upgrade.incomeIncrease.iloc[NowGrade[i]] * basemultiples[i]
+                    NowEffect = (Income - IncomeUnupgrade) / (self.totalGold - Golds)
+                    NeededEffect = (MaxIncome - Income) / Golds
+                elif upgradePQ.empty():
+                    break
 
         if output:
             resultFile = open("result.txt", 'w')
-            print('最优策略：', file=resultFile)
+            print('消耗完金币后的最优策略：', file=resultFile)
             print('工业建筑：%s、%s、%s' % (buildings[0]), file=resultFile)
             print('商业建筑：%s、%s、%s' % (buildings[1]), file=resultFile)
             print('住宅建筑：%s、%s、%s' % (buildings[2]), file=resultFile)
 
             print(file=resultFile)
-            print('总秒伤：', self.showLetterNum(Income), file=resultFile)
+            print('总秒收入：', self.showLetterNum(Income), file=resultFile)
             print(file=resultFile)
 
-            print('各建筑等级：', file=resultFile)
+            print('升级后各建筑等级(括号内为提升量)：', file=resultFile)
             for i, build in enumerate(buildtuple):
-                print('{:<8}\t'.format(build), NowGrade[i], file=resultFile)
+                print('{:<8}\t'.format(build), '%d(+%d)' % (NowGrade[i], NowGrade[i] - self.buildings_config[build]["level"]), file=resultFile)
             print(file=resultFile)
 
             multiples = [basemultiples[i] * self.Upgrade.incomePerSec.iloc[NowGrade[i] - 1] \
                          for i, build in enumerate(buildtuple)]
-            print('各建筑秒伤：', file=resultFile)
+            print('升级后各建筑秒收入：', file=resultFile)
             for i, x in enumerate(multiples):
                 print('{:<8}\t'.format(buildtuple[i]), self.showLetterNum(x), file=resultFile)
             print(file=resultFile)
 
-            if not upgradePQ.empty():
-                ToUpgrade = upgradePQ.get()
-                print('优先升级:', buildtuple[ToUpgrade.name], file=resultFile)
-                print('每金币收益:', -ToUpgrade.priority, file=resultFile)
+            # if not upgradePQ.empty():
+            #     ToUpgrade = upgradePQ.get()
+            #     print('优先升级:', buildtuple[ToUpgrade.name], file=resultFile)
+            #     print('每金币收益:', -ToUpgrade.priority, file=resultFile)
 
             resultFile.close()
         else:
             return Income, (buildings, NowGrade), NowEffect
 
-    def calculate(self):
+    def calculate(self, progress_bar = None):
 
         if self.totalGold == "0":
             self.totalGold = 0
@@ -140,19 +144,17 @@ class Calculator:
                 if pos != -1:
                     # this is the unit
                     GoldNum, Unit = self.totalGold[:pos], self.totalGold[pos:]
-                    print(GoldNum, Unit)
                     self.totalGold = float(GoldNum) * static.UnitDict[Unit]
                     success = True
-                    print(self.totalGold)
                     break
             if not success:
                 print('单位错误,请检查金币输入')
                 return
 
         if self.mode == 'online':
-            Industrial = static.industry_buildings
-            Business = static.commerce_buildings
-            Residence = static.residence_buildings
+            Industrial = copy.deepcopy(static.industry_buildings)
+            Business = copy.deepcopy(static.commerce_buildings)
+            Residence = copy.deepcopy(static.residence_buildings)
             for build in self.blacklist:
                 if build in Industrial:
                     Industrial.remove(build)
@@ -209,6 +211,11 @@ class Calculator:
         MaxIncome = 0
         MaxStat = 0
 
+        if progress_bar is not None:
+            progress_bar.setMinimum(0)
+            progress_bar.setMaximum(searchSpaceSize)
+            progress_bar.setValue(0)
+
         for buildings in tqdm(searchSpace, total=searchSpaceSize,
                               bar_format='{percentage:3.0f}%,{elapsed}<{remaining}|{bar}|{n_fmt}/{total_fmt},{rate_fmt}{postfix}'):
             TotalIncome, Stat, NowEffect = self.calculateComb(buildings, MaxIncome)
@@ -216,6 +223,7 @@ class Calculator:
                 MaxIncome = TotalIncome
                 MaxStat = Stat
                 MaxEffect = NowEffect
+            progress_bar.setValue(progress_bar.value()+1)
 
         self.calculateComb(MaxStat[0], output=True)
 
