@@ -5,6 +5,7 @@ import os
 from config import Config
 from static import residence_buildings, commerce_buildings, industry_buildings, default_blacklist, modes
 from update import get_latest_version
+import threading
 
 
 class BuildingGroupBox(QtWidgets.QGroupBox):
@@ -192,6 +193,7 @@ class Ui_MainWindow(object):
         self.modeComboBox = QtWidgets.QComboBox(self.othersGroupBox)
         self.modeComboBox.setGeometry(QtCore.QRect(90, 20, 60, 20))
         self.modeComboBox.addItems(["在线", "离线", "火车"])
+        self.modeComboBox.setEnabled(False)
 
         self.goldLabel = QtWidgets.QLabel(self.othersGroupBox)
         self.goldLabel.setGeometry(QtCore.QRect(20, 45, 60, 20))
@@ -199,7 +201,7 @@ class Ui_MainWindow(object):
 
         self.goldLineEdit = QtWidgets.QLineEdit(self.othersGroupBox)
         self.goldLineEdit.setGeometry(QtCore.QRect(90, 45, 60, 20))
-        self.goldLineEdit.setText("8.88aa")
+        self.goldLineEdit.setText(self.config.gold_config)
 
         self.helpLabel = QtWidgets.QLabel(self.othersGroupBox)
         self.helpLabel.setGeometry(QtCore.QRect(20, 70, 140, 20))
@@ -220,24 +222,40 @@ class Ui_MainWindow(object):
 
         self.currentVersionLabel = QtWidgets.QLabel(self.centralwidget)
         self.currentVersionLabel.setGeometry(QtCore.QRect(20, 550, 250, 20))
-        self.currentVersionLabel.setText("当前本地版本：V2.0 Beta 2")
+        self.currentVersionLabel.setText("当前本地版本：V2.1")
 
         self.openUrlLabel = QtWidgets.QLabel(self.centralwidget)
         self.openUrlLabel.setGeometry(QtCore.QRect(20, 580, 270, 20))
         self.openUrlLabel.setText('<a href="https://github.com/WANGPeisheng1997/JiaGuoMengCalculator" style="color:#0000ff;">下载最新版本</a>')
         self.openUrlLabel.setOpenExternalLinks(True)
 
-        self.saveButton = QtWidgets.QPushButton(self.centralwidget)
-        self.saveButton.setGeometry(QtCore.QRect(440, 540, 100, 23))
-        self.saveButton.setObjectName("saveButton")
-        self.saveButton.setText("保存配置文件")
-        self.saveButton.clicked.connect(self.save_info)
+        # self.saveButton = QtWidgets.QPushButton(self.centralwidget)
+        # self.saveButton.setGeometry(QtCore.QRect(440, 540, 100, 23))
+        # self.saveButton.setObjectName("saveButton")
+        # self.saveButton.setText("保存配置文件")
+        # self.saveButton.clicked.connect(self.save_info)
 
         self.calculateButton = QtWidgets.QPushButton(self.centralwidget)
-        self.calculateButton.setGeometry(QtCore.QRect(1100, 540, 140, 23))
+        self.calculateButton.setGeometry(QtCore.QRect(1100, 520, 140, 23))
         self.calculateButton.setObjectName("calculateButton")
-        self.calculateButton.setText("保存并计算最优排布")
+        self.calculateButton.setText("仅计算当前最优排布")
         self.calculateButton.clicked.connect(self.calculate)
+
+        self.calculateUpgradeButton = QtWidgets.QPushButton(self.centralwidget)
+        self.calculateUpgradeButton.setGeometry(QtCore.QRect(1100, 550, 140, 23))
+        self.calculateUpgradeButton.setObjectName("calculateUpgradeButton")
+        self.calculateUpgradeButton.setText("计算升级后最优排布")
+        self.calculateUpgradeButton.clicked.connect(self.calculate_upgrade)
+
+        self.progressLabel = QtWidgets.QLabel(self.centralwidget)
+        self.progressLabel.setGeometry(QtCore.QRect(540, 520, 250, 20))
+        self.progressLabel.setText("计算时间可能较长，请勿关闭窗口！")
+
+        self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
+        self.progressBar.setGeometry(QtCore.QRect(500, 550, 300, 23))
+        self.progressBar.setMinimum(0)
+        self.progressBar.setMaximum(100)
+        self.progressBar.setValue(0)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -249,9 +267,9 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "家国梦建筑最优化计算器 V2.0 Beta 2"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "家国梦建筑最优化计算器 V2.1"))
 
-    def save_info(self):
+    def save_info(self, only_current = False):
         residence_buildings_info = self.residenceGroupBox.get_buildings_info()
         commerce_buildings_info = self.commerceGroupBox.get_buildings_info()
         industry_buildings_info = self.industryGroupBox.get_buildings_info()
@@ -271,13 +289,26 @@ class Ui_MainWindow(object):
         mode = modes[self.modeComboBox.currentIndex()]
         gold = self.goldLineEdit.text()
 
-        all_info = {"buildings": all_buildings_info, "buffs": all_buffs_info, "blacklist": blacklist, "whitelist": whitelist, "mode": mode, "gold": gold}
+        all_info = {"buildings": all_buildings_info, "buffs": all_buffs_info, "blacklist": blacklist, "whitelist": whitelist, "mode": mode, "gold": gold, "only_current": only_current}
         js = json.dumps(all_info, indent=4, separators=(',', ': '))
         file = open('config.json', 'w')
         file.write(js)
         file.close()
 
     def calculate(self):
+        self.save_info(only_current=True)
+        file = open('config.json', 'r')
+        json_config = json.load(file)
+        file.close()
+        config = Config()
+        config.init_config_from_json(json_config)
+        calculator = Calculator(config)
+        calculator.calculate(progress_bar=self.progressBar)
+        resultFile = open("result.txt", 'r')
+        self.resultLabel.setText(resultFile.read())
+        resultFile.close()
+
+    def calculate_upgrade(self):
         self.save_info()
         file = open('config.json', 'r')
         json_config = json.load(file)
@@ -285,7 +316,7 @@ class Ui_MainWindow(object):
         config = Config()
         config.init_config_from_json(json_config)
         calculator = Calculator(config)
-        calculator.calculate()
+        calculator.calculate(progress_bar=self.progressBar)
         resultFile = open("result.txt", 'r')
         self.resultLabel.setText(resultFile.read())
         resultFile.close()

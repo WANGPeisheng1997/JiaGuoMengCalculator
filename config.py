@@ -21,6 +21,9 @@ class Config:
         # enum("online", "offline", "train")
         self.mode_config = "online"
 
+        # Bool
+        self.only_current = False
+
     def init_config_from_json(self, json_config):
         self.buildings_config = json_config["buildings"]
         self.buffs_config = json_config["buffs"]
@@ -32,6 +35,8 @@ class Config:
             self.gold_config = json_config["gold"]
         if "mode" in json_config:
             self.mode_config = json_config["mode"]
+        if "only_current" in json_config:
+            self.only_current = json_config["only_current"]
 
     def init_config_from_local(self):
         self.mode_config = 'online'  # 在线模式填online，离线模式填offline，供货模式填train
