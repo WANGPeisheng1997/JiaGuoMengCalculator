@@ -23,9 +23,9 @@
 
 - #### 发布版：
 
-  百度网盘链接：[点击下载](https://pan.baidu.com/s/1oX41mKavmYN-GDDEquNXmg)
+  百度网盘链接：[点击下载](https://pan.baidu.com/s/1fGN7JBhWTt6LjU8dYBT13A)
 
-  提取码：h5oe
+  提取码：kglf
 
   打开**main.exe**即可畅享所有功能
 
