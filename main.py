@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from ui import *
+import multiprocessing
 
 
 class MyWindow(QMainWindow, Ui_MainWindow):
@@ -10,6 +11,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
 
 
 if __name__ == '__main__':
+    multiprocessing.freeze_support()
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     app = QApplication(sys.argv)
     myWin = MyWindow()
