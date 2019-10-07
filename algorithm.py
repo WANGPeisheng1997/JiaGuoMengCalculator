@@ -3,6 +3,7 @@ from tqdm import tqdm
 from queue import PriorityQueue as PQ
 import pandas as pd
 from itertools import combinations, product
+from concurrent.futures import ProcessPoolExecutor
 import static
 import copy
 
@@ -23,7 +24,10 @@ class NamedPQ(object):
 
 
 class Calculator:
-
+   
+    # set as the cpu core number 
+    MAX_WORKER_NUMBER = 8
+    
     def __init__(self, config):
         self.config = config
         self.buildings_config = config.buildings_config
@@ -214,17 +218,35 @@ class Calculator:
 
         if progress_bar is not None:
             progress_bar.setMinimum(0)
-            progress_bar.setMaximum(searchSpaceSize)
+            progress_bar.setMaximum(self.MAX_WORKER_NUMBER * 2)
             progress_bar.setValue(0)
 
-        for buildings in tqdm(searchSpace, total=searchSpaceSize,
+        with ProcessPoolExecutor(max_workers=self.MAX_WORKER_NUMBER) as ex:
+            total = int(searchSpaceSize)
+            step = total // (self.MAX_WORKER_NUMBER * 2) 
+            futures = [ex.submit(self.workerWrapper, searchSpace, i, i + step) for i in range(0, total, step)]
+            for f in tqdm(futures, total=len(futures),
                               bar_format='{percentage:3.0f}%,{elapsed}<{remaining}|{bar}|{n_fmt}/{total_fmt},{rate_fmt}{postfix}'):
-            TotalIncome, Stat, NowEffect = self.calculateComb(buildings, MaxIncome)
-            if TotalIncome > MaxIncome:
-                MaxIncome = TotalIncome
-                MaxStat = Stat
-                MaxEffect = NowEffect
-            progress_bar.setValue(progress_bar.value()+1)
+                TotalIncome, Stat, NowEffect = f.result()
+                if TotalIncome > MaxIncome:
+                    MaxIncome = TotalIncome
+                    MaxStat = Stat
+                    MaxEffect = NowEffect
+                progress_bar.setValue(progress_bar.value()+1)
 
         self.calculateComb(MaxStat[0], output=True)
 
+    def workerWrapper(self, searchSpace, start, end):
+        _MaxIncome = 0
+        _MaxStat = 0
+        for ind, buildings in enumerate(searchSpace):
+            if start > ind:
+                continue
+            if end <= ind:
+                break
+            TotalIncome, Stat, NowEffect = self.calculateComb(buildings, _MaxIncome)
+            if TotalIncome > _MaxIncome:
+                _MaxIncome = TotalIncome
+                _MaxStat = Stat
+                _MaxEffect = NowEffect
+        return _MaxIncome, _MaxStat, _MaxEffect
