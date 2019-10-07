@@ -225,7 +225,7 @@ class Ui_MainWindow(object):
 
         self.currentVersionLabel = QtWidgets.QLabel(self.centralwidget)
         self.currentVersionLabel.setGeometry(QtCore.QRect(20, 550, 250, 20))
-        self.currentVersionLabel.setText("当前本地版本：V2.1")
+        self.currentVersionLabel.setText("当前本地版本：V2.2")
 
         self.openUrlLabel = QtWidgets.QLabel(self.centralwidget)
         self.openUrlLabel.setGeometry(QtCore.QRect(20, 580, 270, 20))
@@ -270,7 +270,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "家国梦建筑最优化计算器 V2.1"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "家国梦建筑最优化计算器 V2.2"))
 
     def save_info(self, only_current = False):
         residence_buildings_info = self.residenceGroupBox.get_buildings_info()
