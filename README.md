@@ -23,9 +23,9 @@
 
 - #### 发布版：
 
-  百度网盘链接：[点击下载](https://pan.baidu.com/s/1hsBmhuGOjK4CQ20-uvwj-g)
+  百度网盘链接：[点击下载](https://pan.baidu.com/s/1oX41mKavmYN-GDDEquNXmg)
 
-  提取码：iiwk
+  提取码：h5oe
 
   打开**main.exe**即可畅享所有功能
 
