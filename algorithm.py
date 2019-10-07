@@ -76,25 +76,25 @@ class Calculator:
         basemultiples = [self.buildsDict[build]['baseIncome'] * comboBuff[build] \
                          for i, build in enumerate(buildtuple)]
         IncomeUnupgrade = sum([basemultiples[i] * \
-                               self.Upgrade.incomePerSec.iloc[NowGrade[i] - 1] \
+                               self.Upgrade['incomePerSec'][NowGrade[i] - 1] \
                                for i, build in enumerate(buildtuple)])
         Income = IncomeUnupgrade
 
         if not self.only_current:
             upgradePQ = PQ()
             for i, build in enumerate(buildtuple):
-                upgradePQ.put(NamedPQ(-self.Upgrade['Ratio' + Rarities[i]].iloc[NowGrade[i] - 1] * basemultiples[i],
+                upgradePQ.put(NamedPQ(-self.Upgrade['Ratio' + Rarities[i]][NowGrade[i] - 1] * basemultiples[i],
                                       i))
 
             while Golds > 0 and NowEffect > NeededEffect:
                 i = upgradePQ.get().name
                 NowGradeI = NowGrade[i]
                 if NowGradeI < 2000:
-                    Golds -= self.Upgrade[Rarities[i]].iloc[NowGrade[i] + 1]
+                    Golds -= self.Upgrade[Rarities[i]][NowGrade[i] + 1]
                     NowGrade[i] += 1  # upgrade build
-                    upgradePQ.put(NamedPQ(-self.Upgrade['Ratio' + Rarities[i]].iloc[NowGrade[i] - 1] * basemultiples[i],
+                    upgradePQ.put(NamedPQ(-self.Upgrade['Ratio' + Rarities[i]][NowGrade[i] - 1] * basemultiples[i],
                                           i))
-                    Income += self.Upgrade.incomeIncrease.iloc[NowGrade[i]] * basemultiples[i]
+                    Income += self.Upgrade['incomeIncrease'][NowGrade[i]] * basemultiples[i]
                     NowEffect = (Income - IncomeUnupgrade) / (self.totalGold - Golds)
                     NeededEffect = (MaxIncome - Income) / Golds
                 elif upgradePQ.empty():
@@ -116,7 +116,7 @@ class Calculator:
                 print('{:<8}\t'.format(build), '%d(+%d)' % (NowGrade[i], NowGrade[i] - self.buildings_config[build]["level"]), file=resultFile)
             print(file=resultFile)
 
-            multiples = [basemultiples[i] * self.Upgrade.incomePerSec.iloc[NowGrade[i] - 1] \
+            multiples = [basemultiples[i] * self.Upgrade['incomePerSec'][NowGrade[i] - 1] \
                          for i, build in enumerate(buildtuple)]
             print('升级后各建筑秒收入：', file=resultFile)
             for i, x in enumerate(multiples):
@@ -165,7 +165,8 @@ class Calculator:
             totalBuilds = Business + Residence + Industrial
 
         BaseIncome = pd.read_csv('data/baseIncome.csv', encoding='gb2312')
-        self.Upgrade = pd.read_csv('data/upgrade.csv')
+        self._Upgrade = pd.read_csv('data/upgrade.csv')
+        self.Upgrade = self._Upgrade.to_dict()
 
         searchSpace = product(combinations(Industrial, 3),
                               combinations(Business, 3), combinations(Residence, 3))
