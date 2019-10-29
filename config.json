@@ -1,0 +1,212 @@
+{
+    "buildings": {
+        "\u6728\u5c4b": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u5c45\u6c11\u697c": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u94a2\u7ed3\u6784\u623f": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u5e73\u623f": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u5c0f\u578b\u516c\u5bd3": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u4eba\u624d\u516c\u5bd3": {
+            "star": 5,
+            "level": 1450,
+            "buff": 0
+        },
+        "\u82b1\u56ed\u6d0b\u623f": {
+            "star": 5,
+            "level": 1375,
+            "buff": 0
+        },
+        "\u4e2d\u5f0f\u5c0f\u697c": {
+            "star": 5,
+            "level": 1450,
+            "buff": 0
+        },
+        "\u7a7a\u4e2d\u522b\u5885": {
+            "star": 4,
+            "level": 1450,
+            "buff": 0
+        },
+        "\u590d\u5174\u516c\u9986": {
+            "star": 4,
+            "level": 1425,
+            "buff": 0
+        },
+        "\u68a6\u60f3\u516c\u5bd3": {
+            "star": 2,
+            "level": 1425,
+            "buff": 0
+        },
+        "\u4fbf\u5229\u5e97": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u4e94\u91d1\u5e97": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u670d\u88c5\u5e97": {
+            "star": 5,
+            "level": 1400,
+            "buff": 0
+        },
+        "\u83dc\u5e02\u573a": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u5b66\u6821": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u56fe\u4e66\u57ce": {
+            "star": 5,
+            "level": 1425,
+            "buff": 0
+        },
+        "\u5546\u8d38\u4e2d\u5fc3": {
+            "star": 5,
+            "level": 1375,
+            "buff": 0
+        },
+        "\u52a0\u6cb9\u7ad9": {
+            "star": 5,
+            "level": 1375,
+            "buff": 0
+        },
+        "\u8ffd\u68a6\u5feb\u9012": {
+            "star": 3,
+            "level": 1400,
+            "buff": 0
+        },
+        "\u6c11\u98df\u658b": {
+            "star": 4,
+            "level": 1465,
+            "buff": 100
+        },
+        "\u5a92\u4f53\u4e4b\u58f0": {
+            "star": 3,
+            "level": 1455,
+            "buff": 0
+        },
+        "\u6e38\u6cf3\u9986": {
+            "star": 2,
+            "level": 1425,
+            "buff": 0
+        },
+        "\u6728\u6750\u5382": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u98df\u54c1\u5382": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u9020\u7eb8\u5382": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u6c34\u5382": {
+            "star": 5,
+            "level": 1325,
+            "buff": 0
+        },
+        "\u7535\u5382": {
+            "star": 5,
+            "level": 1405,
+            "buff": 0
+        },
+        "\u94a2\u94c1\u5382": {
+            "star": 5,
+            "level": 1425,
+            "buff": 0
+        },
+        "\u7eba\u7ec7\u5382": {
+            "star": 5,
+            "level": 1455,
+            "buff": 0
+        },
+        "\u96f6\u4ef6\u5382": {
+            "star": 5,
+            "level": 1400,
+            "buff": 0
+        },
+        "\u4f01\u9e45\u673a\u68b0": {
+            "star": 4,
+            "level": 1430,
+            "buff": 200
+        },
+        "\u4eba\u6c11\u77f3\u6cb9": {
+            "star": 4,
+            "level": 1425,
+            "buff": 0
+        },
+        "\u5f3a\u56fd\u7164\u4e1a": {
+            "star": 2,
+            "level": 1425,
+            "buff": 0
+        }
+    },
+    "buffs": {
+        "policy": {
+            "global": 2700,
+            "online": 1000,
+            "residence": 6300,
+            "commerce": 5100,
+            "industry": 5400,
+            "jiaguozhiguang": 0
+        },
+        "album": {
+            "global": 430,
+            "online": 440,
+            "residence": 720,
+            "commerce": 840,
+            "industry": 810
+        },
+        "mission": {
+            "global": 0,
+            "online": 0,
+            "residence": 0,
+            "commerce": 0,
+            "industry": 0
+        }
+    },
+    "blacklist": [
+        "\u4fbf\u5229\u5e97",
+        "\u83dc\u5e02\u573a",
+        "\u6728\u5c4b",
+        "\u5c45\u6c11\u697c",
+        "\u5c0f\u578b\u516c\u5bd3",
+        "\u6728\u6750\u5382",
+        "\u98df\u54c1\u5382",
+        "\u6c34\u5382"
+    ],
+    "whitelist": [],
+    "mode": "online",
+    "gold": "42ee",
+    "only_current": true
+}
