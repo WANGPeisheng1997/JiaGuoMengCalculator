@@ -40,8 +40,8 @@ class Config:
 
     def init_config_from_local(self):
         self.mode_config = 'online'  # 在线模式填online，离线模式填offline，供货模式填train
-        self.blacklist_config = '商贸中心 小型公寓 水厂 花园洋房 复兴公馆 加油站 人民石油'.split() # 这里填写不想要或未解锁的建筑
-        self.whitelist_config = '商贸中心 复兴公馆 小型公寓 花园洋房'.split() # 这里填写一定要的建筑
+        self.blacklist_config = '人民石油 '.split() # 这里填写不想要或未解锁的建筑
+        self.whitelist_config = '小型公寓 '.split() # 这里填写一定要的建筑
 
         '''
              在这里填写你的建筑的星级
@@ -50,8 +50,8 @@ class Config:
         BuildStars = {
             5: '人民石油 空中别墅 商贸中心 复兴公馆 纺织厂 图书城 加油站 花园洋房 电厂 小型公寓 居民楼 木屋 五金店 木材厂 食品厂 菜市场 造纸厂 钢结构房 平房 学校 便利店 服装店 水厂',
             4: '零件厂 人才公寓 中式小楼 钢铁厂',
-            3: '民食斋 ',
-            2: '企鹅机械 媒体之声',
+            3: '民食斋 追梦快递',
+            2: '企鹅机械 媒体之声 游泳馆 梦想公寓 强国煤业',
             1: ''
         }
 
@@ -78,9 +78,8 @@ class Config:
         }
 
         Mission_b = {  # 这里填写任务提供的单建筑加成，如果是100%则填写100
-            '便利店': 100,
-            '钢铁厂': 0,
-            '木材厂': 100,
+            '食品厂': 0,
+            '企鹅机械': 100
         }
 
         Mission_g = {  # 这里填写任务提供的全局加成，如果是100%则填写100
@@ -89,7 +88,7 @@ class Config:
             'offline': 0,
             'residence': 0,
             'commerce': 0,
-            'industry': 0
+            'industry': 30
         }
 
         '''

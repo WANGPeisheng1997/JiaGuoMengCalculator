@@ -39,6 +39,11 @@ star,buildName,category,rarity,baseIncome
 3,中式小楼,residence,Rare,8.4
 4,中式小楼,residence,Rare,33.6
 5,中式小楼,residence,Rare,168
+1,梦想公寓,residence,Legendary,1.235
+2,梦想公寓,residence,Legendary,2.47
+3,梦想公寓,residence,Legendary,7.41
+4,梦想公寓,residence,Legendary,29.64
+5,梦想公寓,residence,Legendary,148.2
 1,空中别墅,residence,Legendary,1.52
 2,空中别墅,residence,Legendary,3.04
 3,空中别墅,residence,Legendary,9.12
@@ -89,6 +94,16 @@ star,buildName,category,rarity,baseIncome
 3,加油站,commerce,Rare,7.224
 4,加油站,commerce,Rare,28.896
 5,加油站,commerce,Rare,144.48
+1,追梦快递,commerce,Rare,1.4
+2,追梦快递,commerce,Rare,2.8
+3,追梦快递,commerce,Rare,8.4
+4,追梦快递,commerce,Rare,33.6
+5,追梦快递,commerce,Rare,168
+1,游泳馆,commerce,Legendary,1.52
+2,游泳馆,commerce,Legendary,3.04
+3,游泳馆,commerce,Legendary,9.12
+4,游泳馆,commerce,Legendary,36.48
+5,游泳馆,commerce,Legendary,182.4
 1,民食斋,commerce,Legendary,1.52
 2,民食斋,commerce,Legendary,3.04
 3,民食斋,commerce,Legendary,9.12
@@ -149,3 +164,8 @@ star,buildName,category,rarity,baseIncome
 3,人民石油,industry,Legendary,6
 4,人民石油,industry,Legendary,24
 5,人民石油,industry,Legendary,120
+1,强国煤业,residence,Legendary,1.52
+2,强国煤业,residence,Legendary,3.04
+3,强国煤业,residence,Legendary,9.12
+4,强国煤业,residence,Legendary,36.48
+5,强国煤业,residence,Legendary,182.4

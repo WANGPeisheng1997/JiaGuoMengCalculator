@@ -151,38 +151,43 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1330, 620)
+        MainWindow.resize(1330, 660)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
-        self.residenceGroupBox = BuildingGroupBox(self.centralwidget, QtCore.QRect(10, 20, 330, 300), "residence", "住宅建筑")
+        self.residenceGroupBox = BuildingGroupBox(
+            self.centralwidget, QtCore.QRect(10, 20, 330, 350), "residence", "住宅建筑")
         for building in residence_buildings:
             self.residenceGroupBox.add_building(building, self.config)
 
-        self.commerceGroupBox = BuildingGroupBox(self.centralwidget, QtCore.QRect(350, 20, 330, 300), "commerce", "商业建筑")
+        self.commerceGroupBox = BuildingGroupBox(
+            self.centralwidget, QtCore.QRect(350, 20, 330, 350), "commerce", "商业建筑")
         for building in commerce_buildings:
             self.commerceGroupBox.add_building(building, self.config)
 
-        self.industryGroupBox = BuildingGroupBox(self.centralwidget, QtCore.QRect(690, 20, 330, 300), "industry", "工业建筑")
+        self.industryGroupBox = BuildingGroupBox(
+            self.centralwidget, QtCore.QRect(690, 20, 330, 350), "industry", "工业建筑")
         for building in industry_buildings:
             self.industryGroupBox.add_building(building, self.config)
 
-        self.policyGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(10, 340, 270, 180), "policy", "政策加成")
+        self.policyGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(10, 380, 270, 180), "policy", "政策加成")
         self.policyGroupBox.buff_labels.append("家国之光与国庆的收入增加(%)")
         self.policyGroupBox.buff_types.append("jiaguozhiguang")
         for count in range(len(self.policyGroupBox.buff_labels)):
             self.policyGroupBox.add_buff(name=self.policyGroupBox.buff_labels[count], big_type="policy", small_type=self.policyGroupBox.buff_types[count], config=self.config)
 
-        self.albumGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(290, 340, 270, 160), "album", "相册加成")
+        self.albumGroupBox = BuffGroupBox(
+            self.centralwidget, QtCore.QRect(290, 380, 270, 160), "album", "相册加成")
         for count in range(len(self.albumGroupBox.buff_labels)):
             self.albumGroupBox.add_buff(name=self.albumGroupBox.buff_labels[count], big_type="album", small_type=self.albumGroupBox.buff_types[count], config=self.config)
 
-        self.missionGroupBox = BuffGroupBox(self.centralwidget, QtCore.QRect(570, 340, 270, 160), "mission", "城市任务加成")
+        self.missionGroupBox = BuffGroupBox(
+            self.centralwidget, QtCore.QRect(570, 380, 270, 160), "mission", "城市任务加成")
         for count in range(len(self.missionGroupBox.buff_labels)):
             self.missionGroupBox.add_buff(name=self.missionGroupBox.buff_labels[count], big_type="mission", small_type=self.missionGroupBox.buff_types[count], config=self.config)
 
         self.othersGroupBox = QtWidgets.QGroupBox(self.centralwidget)
-        self.othersGroupBox.setGeometry(QtCore.QRect(850, 340, 170, 160))
+        self.othersGroupBox.setGeometry(QtCore.QRect(850, 380, 170, 160))
         self.othersGroupBox.setTitle("其他选项")
 
         self.modeLabel = QtWidgets.QLabel(self.othersGroupBox)
@@ -220,15 +225,15 @@ class Ui_MainWindow(object):
         self.resultLabel.setAlignment(QtCore.Qt.AlignTop)
 
         self.lastestVersionLabel = QtWidgets.QLabel(self.centralwidget)
-        self.lastestVersionLabel.setGeometry(QtCore.QRect(20, 530, 250, 20))
+        self.lastestVersionLabel.setGeometry(QtCore.QRect(20, 560, 250, 20))
         self.lastestVersionLabel.setText(get_latest_version())
 
         self.currentVersionLabel = QtWidgets.QLabel(self.centralwidget)
-        self.currentVersionLabel.setGeometry(QtCore.QRect(20, 550, 250, 20))
+        self.currentVersionLabel.setGeometry(QtCore.QRect(20, 580, 250, 20))
         self.currentVersionLabel.setText("当前本地版本：V2.2")
 
         self.openUrlLabel = QtWidgets.QLabel(self.centralwidget)
-        self.openUrlLabel.setGeometry(QtCore.QRect(20, 580, 270, 20))
+        self.openUrlLabel.setGeometry(QtCore.QRect(20, 600, 270, 20))
         self.openUrlLabel.setText('<a href="https://github.com/WANGPeisheng1997/JiaGuoMengCalculator" style="color:#0000ff;">下载最新版本</a>')
         self.openUrlLabel.setOpenExternalLinks(True)
 
@@ -239,23 +244,23 @@ class Ui_MainWindow(object):
         # self.saveButton.clicked.connect(self.save_info)
 
         self.calculateButton = QtWidgets.QPushButton(self.centralwidget)
-        self.calculateButton.setGeometry(QtCore.QRect(1100, 520, 140, 23))
+        self.calculateButton.setGeometry(QtCore.QRect(1100, 540, 140, 23))
         self.calculateButton.setObjectName("calculateButton")
         self.calculateButton.setText("仅计算当前最优排布")
         self.calculateButton.clicked.connect(self.calculate)
 
         self.calculateUpgradeButton = QtWidgets.QPushButton(self.centralwidget)
-        self.calculateUpgradeButton.setGeometry(QtCore.QRect(1100, 550, 140, 23))
+        self.calculateUpgradeButton.setGeometry(QtCore.QRect(1100, 570, 140, 23))
         self.calculateUpgradeButton.setObjectName("calculateUpgradeButton")
         self.calculateUpgradeButton.setText("计算升级后最优排布")
         self.calculateUpgradeButton.clicked.connect(self.calculate_upgrade)
 
         self.progressLabel = QtWidgets.QLabel(self.centralwidget)
-        self.progressLabel.setGeometry(QtCore.QRect(540, 520, 250, 20))
+        self.progressLabel.setGeometry(QtCore.QRect(540, 540, 250, 20))
         self.progressLabel.setText("计算时间可能较长，请勿关闭窗口！")
 
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
-        self.progressBar.setGeometry(QtCore.QRect(500, 550, 300, 23))
+        self.progressBar.setGeometry(QtCore.QRect(500, 570, 300, 23))
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(100)
         self.progressBar.setValue(0)
