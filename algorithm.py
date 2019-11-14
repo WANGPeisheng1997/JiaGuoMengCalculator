@@ -93,7 +93,7 @@ class Calculator:
             while Golds > 0 and NowEffect > NeededEffect:
                 i = upgradePQ.get().name
                 NowGradeI = NowGrade[i]
-                if NowGradeI < 2000:
+                if NowGradeI < 2000 and Golds>=self.Upgrade[Rarities[i]][NowGrade[i] + 1]:
                     Golds -= self.Upgrade[Rarities[i]][NowGrade[i] + 1]
                     NowGrade[i] += 1  # upgrade build
                     upgradePQ.put(NamedPQ(-self.Upgrade['Ratio' + Rarities[i]][NowGrade[i] - 1] * basemultiples[i],
