@@ -93,19 +93,22 @@ class Calculator:
             while Golds > 0 and NowEffect > NeededEffect:
                 i = upgradePQ.get().name
                 NowGradeI = NowGrade[i]
-                if NowGradeI < 2000:
+                if NowGradeI < 2000 and Golds>=self.Upgrade[Rarities[i]][NowGrade[i] + 1]:
                     Golds -= self.Upgrade[Rarities[i]][NowGrade[i] + 1]
                     NowGrade[i] += 1  # upgrade build
                     upgradePQ.put(NamedPQ(-self.Upgrade['Ratio' + Rarities[i]][NowGrade[i] - 1] * basemultiples[i],
                                           i))
                     Income += self.Upgrade['incomeIncrease'][NowGrade[i]] * basemultiples[i]
-                    NowEffect = (Income - IncomeUnupgrade) / (self.totalGold - Golds)
+                    if self.totalGold - Golds==0:
+                        NowEffect = 0
+                    else:
+                        NowEffect = (Income - IncomeUnupgrade) / (self.totalGold - Golds)
                     NeededEffect = (MaxIncome - Income) / Golds
                 elif upgradePQ.empty():
                     break
 
         if output:
-            resultFile = open("result.txt", 'w')
+            resultFile = open("result.txt", 'w', encoding='utf-8')
             print('消耗完金币后的最优策略：', file=resultFile)
             print('工业建筑：%s、%s、%s' % (buildings[0]), file=resultFile)
             print('商业建筑：%s、%s、%s' % (buildings[1]), file=resultFile)
@@ -232,7 +235,8 @@ class Calculator:
                     MaxIncome = TotalIncome
                     MaxStat = Stat
                     MaxEffect = NowEffect
-                progress_bar.setValue(progress_bar.value()+1)
+                if progress_bar is not None:
+                    progress_bar.setValue(progress_bar.value()+1)
 
         self.calculateComb(MaxStat[0], output=True)
 
